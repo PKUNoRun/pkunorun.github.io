@@ -41,12 +41,12 @@
 .c_button_main {
     position: absolute;
     left: 0;
-    top: 50%;
+    top: 60%;
     bottom: 0;
     right: 0;
     margin: auto;
     width: 60%;
-    height: 10%;
+    height: 9%;
     background: #28a746;
     border-radius: 10px;
     color: white;
@@ -136,4 +136,13 @@
 
 .c_button_submit {
     display: none;
+}
+
+h1{
+    position: absolute;
+    left: 0;
+    top: 10%;
+    bottom: 0;
+    right: 0;
+    margin: auto;
 }
