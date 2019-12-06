@@ -16,7 +16,7 @@
             }
         })();
         function request_for_data() {
-            var ws = new WebSocket("ws://[2001:19f0:ac01:1e52:5400:1ff:fedb:fe1a]:3000");
+            var ws = new WebSocket("wss://[2001:19f0:ac01:1e52:5400:1ff:fedb:fe1a]:3000");
             // var ws = new WebSocket("ws://hamiltonhuaji.ml");
             ws.onopen = function (event) {
                 ws.send(JSON.stringify({ "distance": 6.0, "velocity": 6.0, "frequency": 180 }));
