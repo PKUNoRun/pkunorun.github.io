@@ -3,164 +3,50 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>PKUNoRun</title>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/0.5.0/js/sql.js"></script>
-    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
-    <script>
-        function init(cursor) {
-            init_commands = {
-                "android_metadata": 'CREATE TABLE android_metadata (locale TEXT)',
-                "partial_record": 'CREATE TABLE "partial_record" ( "id" INTEGER PRIMARY KEY AUTOINCREMENT, "date" INTEGER ,"distance" INTEGER ,"duration" INTEGER ,"step" INTEGER )',
-                "partial_track": 'CREATE TABLE "partial_track" ( "id" INTEGER PRIMARY KEY AUTOINCREMENT, "latitude" REAL ,"longitude" REAL ,"recordDbId" INTEGER ,"sequence" INTEGER ,"status" INTEGER )',
-                "record": 'CREATE TABLE "record" ( "id" INTEGER PRIMARY KEY AUTOINCREMENT, "date" INTEGER ,"detailed" INTEGER ,"distance" INTEGER ,"duration" INTEGER ,"invalidReason" INTEGER ,"photoName" TEXT ,"photoRemotePath" TEXT ,"placeHint" TEXT ,"recordId" INTEGER ,"step" INTEGER ,"uploaded" INTEGER ,"userId" TEXT ,"verified" INTEGER )',
-                "track": 'CREATE TABLE "track" ( "id" INTEGER PRIMARY KEY AUTOINCREMENT, "latitude" REAL ,"longitude" REAL ,"recordDbId" INTEGER ,"sequence" INTEGER ,"status" INTEGER )',
-                "user": 'CREATE TABLE "user" ( "id"TEXT PRIMARY KEY, "PESpecialty" INTEGER ,"department" TEXT ,"gender" INTEGER ,"name" TEXT ,"offline" INTEGER ,"token" TEXT )',
-            };
-            tables = cursor.exec("SELECT tbl_name FROM sqlite_master WHERE type='table' ").forEach((value, index) => {
-                return value[0];
-            });
-            init_commands.forEach((value, index) => {
-                if (!tables[index]) {
-                    cursor.exec(value);
-                }
-            });
-        }
-
-        function get_users(cursor) {
-            var result = Object();
-            cursor.exec("SELECT id, name, department FROM user")[0]["values"].forEach((value, index) => {
-                result[value[0]] = [value[1], value[2]];
-            });
-            return result;
-        }
-
-        function insert_record(cursor, userId, date, distance, duration, step) {
-            cursor.exec("INSERT INTO 'record' (userId, date, distance, duration, step, detailed, invalidReason, recordId, uploaded, verified) VALUES ({userId}, {date}, {distance}, {duration}, {step}, {detailed}, {invalidReason}, {recordId}, {uploaded}, {verified})".format({
-                "userId": userId,
-                "date": date,
-                "distance": distance,
-                "duration": duration,
-                "step": step,
-                "detailed": 1,
-                "invalidReason": 0,
-                "recordId": -1,
-                "uploaded": 0,
-                "verified": 1
-            }))
-        }
-
-        function append_record(cursor, userId, dateUTC, distance, duration, step) {
-            return insert_record(cursor, userId, dateUTC, distance, duration, step);
-        }
-
-        function insert_track(cursor, latitude, longitude, recordDbId, status, sequence) {
-            cursor.exec("INSERT INTO 'track' (latitude, longitude, recordDbId, status, sequence) VALUES ({latitude}, {longitude}, {recordDbId}, {status}, {sequence})".format({
-                "latitude": latitude,
-                "longitude": longitude,
-                "recordDbId": recordDbId,
-                "status": status,
-                "sequence": sequence
-            }));
-        }
-
-        function append_track(cursor, recordDbId, lat_lon_list) {
-            lat_lon_list.forEach((value, index) => {
-                insert_track(cursor, value[1], value[0], recordDbId, 0, index);
-            });
-        }
-    </script>
+    <link rel="stylesheet" type="text/css" href="default.css">
     <script>
         (function detectSupportablity() {
             if (!(window.File && window.FileReader && window.FileList && window.Blob)) {
                 alert('Your browser not support the application, try the latest verion of Mozila FireFox');
             }
         })();
-        function request_for_data(arg, cont) {
-            var ws = new WebSocket("ws://[2001:19f0:ac01:1e52:5400:1ff:fedb:fe1a]:3000");
-            // var ws = new WebSocket("ws://hamiltonhuaji.ml");
-            ws.onopen = function (event) {
-                ws.send(JSON.stringify(arg));
-            };
-            ws.onmessage = function (event) {
-                cont(event.data);
-            };
-        }
-
-        function handleSqliteUpload(evt) {
-            var sqlite = evt.target.files[0];
-            var reader = new FileReader();
-            reader.onload = function () {
-                var uints = new Uint8Array(reader.result);
-                sqliteObj = new SQL.Database(uints);
-                // var tab = $("#tab");
-                // var users = get_users(sqliteObj);
-                // users.forEach((value, index)=>{
-                //     var newTr = tab.insertRow();
-                //     var userIdTd = newTr.insertCell(0);
-                //     var departmentTd = newTr.insertCell(1);
-
-                //     userIdTd.innerText = index;
-                //     departmentTd.innerText = value[1];
-                // });
-            }
-            reader.readAsArrayBuffer(sqlite);
-        }
-
-        function handleSubmit() {
-            // if (csvObj == null || sqliteObj == null) {
-            //     alert('Submit after upload the csv and the sqlite file');
-            //     return;
-            // }
-            // alert('Done');
-            // var tasks = csvObj.datalines.map(dataline => { return fetchRecord(dataline) });
-            // Promise.all(tasks).then(() => {
-            //     createAndDownloadFile('result.db', sqliteObj.export());
-            // })
-            var distance = $("#distance").val();
-            var userId = $("#userId").val();
-            var velocity = $("#velocity").val();
-            var frequency = $("#frequency").val();
-            var dateUTC = $("#dateUTC").val();
-
-            request_for_data({ "distance": Number(distance), "velocity": Number(velocity), "frequency": Number(frequency) }, (cont)=>{
-                append_record(sqliteObj, userId, dateUTC, distance, duration, step);
-            });
-        }
-
-        function createAndDownloadFile(fileName, content) {
-            var a = document.createElement('a');
-            var blob = new Blob([content]);
-            a.download = fileName;
-            a.href = URL.createObjectURL(blob);
-            a.click();
-            URL.revokeObjectURL(blob);
-        }
-    </script> -->
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/0.5.0/js/sql.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <script src="./dbm.js"></script>
+    <script src="./main.js"></script>
 </head>
 
-<body>
-    <h1>写不动了qwq, 下学期继续.</h1>
-    <!-- <h1>Download This Page to Use PKUNoRun</h1> -->
-    <!-- <table id="utable">
-        <thead>
-            <th>User</th>
-            <th>Department</th>
-        </thead>
-    </table> -->
-    <!-- <input type="text" placeholder="用户学号 / userId" id="userId" class="input_blank">
-    <input type="text" placeholder="距离 / distance" id="distance" class="input_blank">
-    <input type="text" placeholder="配速 / velocity" id="velocity" class="input_blank">
-    <input type="text" placeholder="步频 / frequency" id="frequency" class="input_blank">
-    <input type="text" placeholder="时间(精确到毫秒的UTC) / UTC" id="dateUTC" class="input_blank">
-    upload the sqlite file: <input type="file" name="sqlite" id="sqlite" autocomplete='off'><br>
-    <input id="submit" type="submit" value="submit"></input>
-
+<body style="text-align: center;">
+    <h1>Welcome to PKUNoRun</h1>
+    <div id="i_div_main" class="c_div_main">
+        <select type="text" placeholder="用户学号 / userId" id="userId" class="c_input_blank">
+        </select>
+        <input type="text" placeholder="距离 / distance, km" id="distance" class="c_input_blank">
+        <input type="text" placeholder="配速 / velocity, min/km" id="velocity" class="c_input_blank">
+        <input type="text" placeholder="步频 / frequency, bpm" id="frequency" class="c_input_blank">
+        <input type="text" placeholder="跑步时间 / 13 digits UTC" id="dateUTC" class="c_input_blank">
+    </div>
+    <input type="file" name="sqlite" id="i_input_file" autocomplete='off' style="visibility: hidden;">
+    <button class="c_button_main" id="i_button_main">Upload data.db</button>
     <script>
-        document.getElementById('sqlite').onchange = handleSqliteUpload;
-        document.getElementById('submit').onclick = handleSubmit;
-    </script> -->
+        $("#i_input_file").change(on_sqlite_real_upload);
+        document.getElementById("i_button_main").onclick = on_sqlite_upload;
+        document.getElementById("userId").onchange = on_input_change;
+        document.getElementById("distance").onchange = on_input_change;
+        document.getElementById("velocity").onchange = on_input_change;
+        document.getElementById("frequency").onchange = on_input_change;
+        document.getElementById("dateUTC").onchange = on_input_change;
+        // $("#i_button_main").click(on_sqlite_upload);
+        // $("#userId").change(on_input_change);
+        // $("#distance").change(on_input_change);
+        // $("#velocity").change(on_input_change);
+        // $("#frequency").change(on_input_change);
+        // $("#dateUTC").change(on_input_change);
+    </script>
 </body>
 
 </html>
