@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>PKUNoRun</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/0.5.0/js/sql.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <script src="./dbm.js"></script>
+    <script>
+        (function detectSupportablity() {
+            if (!(window.File && window.FileReader && window.FileList && window.Blob)) {
+                alert('Your browser not support the application, try the latest verion of Mozila FireFox');
+            }
+        })();
+        function request_for_data() {
+            var ws = new WebSocket("ws://[2001:19f0:ac01:1e52:5400:1ff:fedb:fe1a]:3000");
+            // var ws = new WebSocket("ws://hamiltonhuaji.ml");
+            ws.onopen = function (event) {
+                ws.send(JSON.stringify({ "distance": 6.0, "velocity": 6.0, "frequency": 180 }));
+            };
+            ws.onmessage = function (event) {
+                console.log(event.data);
+            };
+        }
+
+        function handleSqliteUpload(evt) {
+            var sqlite = evt.target.files[0];
+            var reader = new FileReader();
+            reader.onload = function () {
+                var uints = new Uint8Array(reader.result);
+                sqliteObj = new SQL.Database(uints);
+            }
+            reader.readAsArrayBuffer(sqlite);
+        }
+
+        function handleSubmit() {
+            if (csvObj == null || sqliteObj == null) {
+                alert('Submit after upload the csv and the sqlite file');
+                return;
+            }
+            alert('Done');
+            var tasks = csvObj.datalines.map(dataline => { return fetchRecord(dataline) });
+            Promise.all(tasks).then(() => {
+                createAndDownloadFile('result.db', sqliteObj.export());
+            })
+        }
+
+        function createAndDownloadFile(fileName, content) {
+            var a = document.createElement('a');
+            var blob = new Blob([content]);
+            a.download = fileName;
+            a.href = URL.createObjectURL(blob);
+            a.click();
+            URL.revokeObjectURL(blob);
+        }
+    </script>
+</head>
+
+<body>
+    upload the sqlite file: <input type="file" name="sqlite" id="sqlite" autocomplete='off'><br>
+    <input id="submit" type="submit" value="submit"></input>
+
+    <script>
+        document.getElementById('sqlite').onchange = handleSqliteUpload;
+        document.getElementById('submit').onclick = handleSubmit;
+    </script>
+</body>
+
+</html>
