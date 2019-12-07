@@ -1,40 +1,36 @@
 @keyframes c_button_main_fade {
-    0% {
-        opacity: 100%;
-    }
     100% {
-        opacity: 0%;
-        display: none;
+        -webkit-filter: blur(5px);
+        filter: blur(5px);
     }
 }
 
 @-webkit-keyframes c_button_main_fade {
-    0% {
-        opacity: 100%;
-    }
     100% {
-        opacity: 0%;
-        display: none;
+        -webkit-filter: blur(5px);
+        filter: blur(5px);
     }
 }
 
 @keyframes c_button_main_show {
     0% {
-        opacity: 0%;
-        display: block;
+        -webkit-filter: blur(5px);
+        filter: blur(5px);
     }
     100% {
-        opacity: 100%;
+        -webkit-filter: blur(0px);
+        filter: blur(0px);
     }
 }
 
 @-webkit-keyframes c_button_main_show {
     0% {
-        opacity: 0%;
-        display: block;
+        -webkit-filter: blur(5px);
+        filter: blur(5px);
     }
     100% {
-        opacity: 100%;
+        -webkit-filter: blur(0px);
+        filter: blur(0px);
     }
 }
 
@@ -62,12 +58,14 @@
     animation: c_button_main_fade 2s;
     -webkit-animation: c_button_main_fade 2s;
     animation-fill-mode: forwards;
+    animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
 .c_button_main.show {
     animation: c_button_main_show 2s;
     -webkit-animation: c_button_main_show 2s;
     animation-fill-mode: forwards;
+    animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
 .hid {
@@ -78,13 +76,13 @@
     0% {
         opacity: 0%;
         display: block;
-        -moz-transform: scale(0, 0);
-        -webkit-transform: scale(0, 0);
+        filter: blur(50px);
+        -webkit-filter: blur(50px);
     }
     100% {
         opacity: 100%;
-        -moz-transform: scale(1, 1);
-        -webkit-transform: scale(1, 1);
+        filter: blur(0px);
+        -webkit-filter: blur(0px);
     }
 }
 
@@ -92,13 +90,9 @@
     0% {
         opacity: 0%;
         display: block;
-        -moz-transform: scale(0, 0);
-        -webkit-transform: scale(0, 0);
     }
     100% {
         opacity: 100%;
-        -moz-transform: scale(1, 1);
-        -webkit-transform: scale(1, 1);
     }
 }
 
@@ -122,7 +116,7 @@
     margin: auto;
 }
 
-.c_input_blank{
+.c_input_blank {
     border-radius: 10px;
     border: 1px;
     padding: 5px;
@@ -138,7 +132,7 @@
     display: none;
 }
 
-h1{
+h1 {
     position: absolute;
     left: 0;
     top: 10%;
