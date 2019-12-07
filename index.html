@@ -31,6 +31,9 @@
         <input type="text" placeholder="步频 / frequency, bpm" id="frequency" class="c_input_blank">
         <input type="text" placeholder="跑步时间 / 13 digits UTC" id="dateUTC" class="c_input_blank">
     </div>
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="i_loading_icon" class="c_loading_icon">
+        <circle cx="50%" cy="50%" r="49%" style="stroke:rgb(0,0,0);stroke-width:1px;fill:none;"></circle>
+    </svg>
     <input type="file" name="sqlite" id="i_input_file" autocomplete='off' style="visibility: hidden;">
     <button class="c_button_main" id="i_button_main">Upload data.db</button>
     <script>

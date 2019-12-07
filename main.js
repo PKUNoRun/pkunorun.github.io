@@ -50,6 +50,23 @@ function on_sqlite_upload(event) {
 }
 
 function on_submit(event) {
-    // TODO
-    alert("Not Finished Yet.");
+    disable_submit_button();
+    $("#i_div_main").addClass("fade");
+    $("#i_loading_icon").addClass("show");
+    $("#i_loading_icon").addClass("loading");
+    request_for_data();
+}
+
+function request_for_data() {
+    var ws = new WebSocket('wss://hamiltonhuaji.ml/wss/');
+    ws.onmessage = (message) => {
+        // do something
+        console.log(message.data);
+        $("#i_loading_icon").addClass("fade");
+        // TODO
+        // alert("Not Finished Yet.");
+    };
+    ws.onopen = (evnet) => {
+        ws.send('{"distance":6.0, "velocity":6.0,"frequency":180}');
+    };
 }
