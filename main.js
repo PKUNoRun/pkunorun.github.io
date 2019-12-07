@@ -33,12 +33,12 @@ function on_input_change(event){
 }
 
 function on_sqlite_real_upload(event){
+    update_view();
     var sqlite = event.target.files[0];
     var reader = new FileReader();
     reader.onload = function () {
         var uints = new Uint8Array(reader.result);
         sqliteObj = new SQL.Database(uints);
-        update_view();
         update_userId_view();
     }
     reader.readAsArrayBuffer(sqlite);
