@@ -59,7 +59,7 @@ function on_submit(event) {
 
 function prove_of_work(hashed, k0, calced){
     var worker = new Worker("pow.js");
-    worker.postMessage(hashed, k0);
+    worker.postMessage([hashed, k0]);
     worker.onmessage = calced;
 }
 
