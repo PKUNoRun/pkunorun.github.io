@@ -57,16 +57,33 @@ function on_submit(event) {
     request_for_data();
 }
 
+function prove_of_work(hashed, k0, calced){
+    var worker = new Worker("pow.js");
+    worker.postMessage(hashed, k0);
+    worker.onmessage = calced;
+}
+
 function request_for_data() {
     var ws = new WebSocket('wss://hamiltonhuaji.ml/wss/');
+    // var ws = new WebSocket('ws://127.0.0.1:3000/');
     ws.onmessage = (message) => {
         // do something
-        console.log(message.data);
-        $("#i_loading_icon").addClass("fade");
+        // console.log(message.data);
+        var argv = JSON.parse(message.data);
+        var hashed = argv["hashed"];
+        var key0 = argv["key0"];
+        prove_of_work(hashed, key0, (event)=>{
+            var key1 = event.data;
+            ws.send('{"distance":6.0, "velocity":6.0,"frequency":180,"key1":"'+key1+'"}');
+            ws.onmessage = (message)=>{
+                console.log(message.data);
+            };
+            $("#i_loading_icon").addClass("fade");
+        });
         // TODO
         // alert("Not Finished Yet.");
     };
-    ws.onopen = (evnet) => {
-        ws.send('{"distance":6.0, "velocity":6.0,"frequency":180}');
-    };
+    // ws.onopen = (evnet) => {
+    //     ws.send('{"distance":6.0, "velocity":6.0,"frequency":180}');
+    // };
 }
