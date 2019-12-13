@@ -1,3 +1,4 @@
+importScripts("https://cdn.jsdelivr.net/gh/emn178/js-sha512/build/sha512.min.js");
 onmessage = (event) => {
     var hashed = event.data[0];
     var key0 = event.data[1];
