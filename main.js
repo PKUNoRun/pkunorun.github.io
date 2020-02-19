@@ -88,7 +88,7 @@ function request_for_data() {
                 console.log(message.data);
                 let rid = append_record(sqliteObj, $("#userId").val(), 1598918400000, 6.0, 2400, 114514);
                 append_track(sqliteObj, rid, JSON.parse(message.data));
-                createAndDownloadFile("data_new.db", sqliteObj.close().export());
+                createAndDownloadFile("data_new.db", sqliteObj.export());
                 $("#i_loading_icon").addClass("fade");
             };
         });
