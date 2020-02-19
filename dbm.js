@@ -17,24 +17,40 @@ function init(cursor) {
     });
 }
 
+function format(str, dic) {
+    for (let k of Object.keys(dic)) {
+        if (typeof (dic[k]) === "number") {
+            return str.replace(new RegExp(":" + k, "g"), String(dic[k]));
+        } else if (typeof (dic[k]) === "string") {
+            return str.replace(new RegExp(":" + k, "g"), dic[k]);
+        } else {
+            return str.replace(new RegExp(":" + k, "g"), "NULL");
+        }
+    }
+}
+
 function get_users(cursor) {
     return cursor.exec("SELECT id, name, department FROM user")[0]["values"];
 }
 
 function insert_record(cursor, userId, date, distance, duration, step) {
-    cursor.exec("INSERT INTO 'record' (userId, date, distance, duration, step, detailed, invalidReason, recordId, uploaded, verified) VALUES (:userId, :date, :distance, :duration, :step, :detailed, :invalidReason, :recordId, :uploaded, :verified)",
-    {
-        "userId": userId,
-        "date": date,
-        "distance": distance,
-        "duration": duration,
-        "step": step,
-        "detailed": 1,
-        "invalidReason": 0,
-        "recordId": -1,
-        "uploaded": 0,
-        "verified": 1
-    });
+    cursor.exec(
+        format(
+            "INSERT INTO 'record' (userId, date, distance, duration, step, detailed, invalidReason, recordId, uploaded, verified) VALUES (:userId, :date, :distance, :duration, :step, :detailed, :invalidReason, :recordId, :uploaded, :verified)",
+            {
+                "userId": userId,
+                "date": date,
+                "distance": distance,
+                "duration": duration,
+                "step": step,
+                "detailed": 1,
+                "invalidReason": 0,
+                "recordId": -1,
+                "uploaded": 0,
+                "verified": 1
+            }
+        )
+    );
     return cursor.exec("select last_insert_rowid() from record")[0]["values"][0][0];
 }
 
@@ -43,14 +59,18 @@ function append_record(cursor, userId, dateUTC, distance, duration, step) {
 }
 
 function insert_track(cursor, latitude, longitude, recordDbId, status, sequence) {
-    cursor.exec("INSERT INTO 'track' (latitude, longitude, recordDbId, status, sequence) VALUES (:latitude, :longitude, :recordDbId, :status, :sequence)",
-    {
-        "latitude": latitude,
-        "longitude": longitude,
-        "recordDbId": recordDbId,
-        "status": status,
-        "sequence": sequence
-    });
+    cursor.exec(
+        format(
+            "INSERT INTO 'track' (latitude, longitude, recordDbId, status, sequence) VALUES (:latitude, :longitude, :recordDbId, :status, :sequence)",
+            {
+                "latitude": latitude,
+                "longitude": longitude,
+                "recordDbId": recordDbId,
+                "status": status,
+                "sequence": sequence
+            }
+        )
+    );
 }
 
 function append_track(cursor, recordDbId, lat_lon_list) {
