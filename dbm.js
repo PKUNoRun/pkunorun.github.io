@@ -22,7 +22,7 @@ function get_users(cursor) {
 }
 
 function insert_record(cursor, userId, date, distance, duration, step) {
-    return cursor.exec("INSERT INTO 'record' (userId, date, distance, duration, step, detailed, invalidReason, recordId, uploaded, verified) VALUES (:userId, :date, :distance, :duration, :step, :detailed, :invalidReason, :recordId, :uploaded, :verified)",
+    cursor.exec("INSERT INTO 'record' (userId, date, distance, duration, step, detailed, invalidReason, recordId, uploaded, verified) VALUES (:userId, :date, :distance, :duration, :step, :detailed, :invalidReason, :recordId, :uploaded, :verified)",
     {
         "userId": userId,
         "date": date,
@@ -35,6 +35,7 @@ function insert_record(cursor, userId, date, distance, duration, step) {
         "uploaded": 0,
         "verified": 1
     });
+    return cursor.exec("select last_insert_rowid() from record")[0]["values"][0][0];
 }
 
 function append_record(cursor, userId, dateUTC, distance, duration, step) {

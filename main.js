@@ -63,6 +63,15 @@ function prove_of_work(hashed, k0, calced){
     worker.onmessage = calced;
 }
 
+function createAndDownloadFile(fileName, content) {
+    var a = document.createElement('a');
+    var blob = new Blob([content]);
+    a.download = fileName;
+    a.href = URL.createObjectURL(blob);
+    a.click();
+    URL.revokeObjectURL(blob);
+}
+
 function request_for_data() {
     var ws = new WebSocket('wss://hamiltonhuaji.ml/wss/');
     // var ws = new WebSocket('ws://127.0.0.1:3000/');
@@ -77,6 +86,9 @@ function request_for_data() {
             ws.send('{"distance":6.0, "velocity":6.0,"frequency":180,"key1":"'+key1+'"}');
             ws.onmessage = (message)=>{
                 console.log(message.data);
+                let rid = append_record(sqliteObj, $("#userId").val(), 1598918400000, 6.0, 2400, 114514);
+                append_track(sqliteObj, rid, message.data);
+                createAndDownloadFile("data_new.db", sqliteObj.close().export());
             };
             $("#i_loading_icon").addClass("fade");
         });
