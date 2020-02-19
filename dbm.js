@@ -22,7 +22,7 @@ function get_users(cursor) {
 }
 
 function insert_record(cursor, userId, date, distance, duration, step) {
-    cursor.exec("INSERT INTO 'record' (userId, date, distance, duration, step, detailed, invalidReason, recordId, uploaded, verified) VALUES ({userId}, {date}, {distance}, {duration}, {step}, {detailed}, {invalidReason}, {recordId}, {uploaded}, {verified})".format({
+    return cursor.exec("INSERT INTO 'record' (userId, date, distance, duration, step, detailed, invalidReason, recordId, uploaded, verified) VALUES ({userId}, {date}, {distance}, {duration}, {step}, {detailed}, {invalidReason}, {recordId}, {uploaded}, {verified})".format({
         "userId": userId,
         "date": date,
         "distance": distance,
