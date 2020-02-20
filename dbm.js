@@ -20,13 +20,17 @@ function init(cursor) {
 function format(str, dic) {
     for (let k of Object.keys(dic)) {
         if (typeof (dic[k]) === "number") {
-            return str.replace(new RegExp(":" + k, "g"), String(dic[k]));
+            str =  str.replace(new RegExp(":" + k, "g"), String(dic[k]));
         } else if (typeof (dic[k]) === "string") {
-            return str.replace(new RegExp(":" + k, "g"), dic[k]);
+            str =  str.replace(new RegExp(":" + k, "g"), dic[k]);
         } else {
-            return str.replace(new RegExp(":" + k, "g"), "NULL");
+            str = str.replace(new RegExp(":" + k, "g"), "NULL");
+            console.log("================warn: dic is not str or num.================")
+            console.log(str);
+            console.log(dic);
         }
     }
+    return str;
 }
 
 function get_users(cursor) {

@@ -5,10 +5,12 @@ function update_view() {
 }
 
 function update_userId_view() {
+    document.getElementById("status").innerText = "Parse data.db...";
     var users = get_users(sqliteObj);
     users.forEach((value, index) => {
         $("#userId").append('<option value="' + value[0] + '">' + value[0] + ", " + value[1] + '</option>');
     });
+    document.getElementById("status").innerText = "done.";
 }
 
 function enable_submit_button() {
@@ -57,7 +59,7 @@ function on_submit(event) {
     request_for_data();
 }
 
-function prove_of_work(hashed, k0, calced){
+function prove_of_work(hashed, k0, calced) {
     var worker = new Worker("pow.js");
     worker.postMessage([hashed, k0]);
     worker.onmessage = calced;
@@ -73,6 +75,7 @@ function createAndDownloadFile(fileName, content) {
 }
 
 function request_for_data() {
+    document.getElementById("status").innerText = "Request fake data from server...";
     var ws = new WebSocket('wss://hamiltonhuaji.ml/wss/');
     // var ws = new WebSocket('ws://127.0.0.1:3000/');
     ws.onmessage = (message) => {
@@ -81,21 +84,30 @@ function request_for_data() {
         var argv = JSON.parse(message.data);
         var hashed = argv["hashed"];
         var key0 = argv["key0"];
-        prove_of_work(hashed, key0, (event)=>{
+        document.getElementById("status").innerText = "Anti-dos check...";
+        prove_of_work(hashed, key0, (event) => {
             var key1 = event.data;
-            ws.send('{"distance":6.0, "velocity":6.0,"frequency":180,"key1":"'+key1+'"}');
-            ws.onmessage = (message)=>{
-                console.log(message.data);
-                let rid = append_record(sqliteObj, $("#userId").val(), 1598918400000, 6.0, 2400, 114514);
-                append_track(sqliteObj, rid, JSON.parse(message.data));
+            document.getElementById("status").innerText = "Send request...";
+            ws.send(
+                // '{"distance":6.0, "velocity":6.0,"frequency":180,"key1":"' + key1 + '"}'
+                JSON.stringify({
+                    "distance": Number($("#distance").val()),
+                    "velocity": Number($("#velocity").val()),
+                    "frequency": Number($("#frequency").val()),
+                    "key1": key1
+                })
+            );
+            document.getElementById("status").innerText = "Wait for response...";
+            ws.onmessage = (message) => {
+                document.getElementById("status").innerText = "Write data.db"
+                let track = JSON.parse(message.data);
+                let rid = append_record(sqliteObj, $("#userId").val(), Number($("#dateUTC").val()), track.distance * 1000, track.duration, track.step);
+                append_track(sqliteObj, rid, track.detail);
+                document.getElementById("status").innerText = "done.";
                 createAndDownloadFile("data_new.db", sqliteObj.export());
                 $("#i_loading_icon").addClass("fade");
+                document.getElementById("status").innerText = "Reload page to do this again.";
             };
         });
-        // TODO
-        // alert("Not Finished Yet.");
     };
-    // ws.onopen = (evnet) => {
-    //     ws.send('{"distance":6.0, "velocity":6.0,"frequency":180}');
-    // };
 }
