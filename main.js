@@ -76,8 +76,7 @@ function createAndDownloadFile(fileName, content) {
 
 function request_for_data() {
     document.getElementById("status").innerText = "Request fake data from server...";
-    // var ws = new WebSocket('wss://hamiltonhuaji.ml/wss/');
-    var ws = new WebSocket('ws://proto.cf:3000/');
+    var ws = new WebSocket('wss://pkunorun.proto.cf/');
     ws.onmessage = (message) => {
         // do something
         // console.log(message.data);
